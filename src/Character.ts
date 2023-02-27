@@ -22,7 +22,7 @@ export default class Character implements Fighter {
     this._race = new Elf(characterName, this._dexterity);
     this._archetype = new Mage(characterName);
     this._maxLifePoints = this._race.maxLifePoints / 2;
-    this._lifePoints = this._race.maxLifePoints;
+    this._lifePoints = this._maxLifePoints;
     this._energy = {
       type_: this._archetype.energyType,
       amount: getRandomInt(1, 10),
@@ -60,11 +60,14 @@ export default class Character implements Fighter {
     this._dexterity += getRandomInt(1, 10);
     this._defense += getRandomInt(1, 10);
     this._energy.amount = 10;
-    this._maxLifePoints += getRandomInt(1, 10);
-    if (this.maxLifePoints > this.race.maxLifePoints) {
-      this._maxLifePoints = this._race.maxLifePoints;
-      this._lifePoints = this._race.maxLifePoints;
+    const maxLife = this._maxLifePoints + getRandomInt(1, 10);
+
+    if (maxLife > this.race.maxLifePoints) {
+      this._maxLifePoints = this.race.maxLifePoints;
+    } else {
+      this._maxLifePoints = maxLife;
     }
+    this._lifePoints = this._maxLifePoints;
   }
 
   special(enemy: Fighter): void {
